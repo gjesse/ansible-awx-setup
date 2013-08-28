@@ -18,6 +18,17 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network :forwarded_port, guest: 80, host: 8080
 
+
+  config.vm.define :awx do |awx|
+    awx.vm.network :private_network, ip: "192.168.33.20"
+    awx.vm.provision :shell, :path => "run.sh"
+  end
+
+  config.vm.define :target do |target|
+    target.vm.network :private_network, ip: "192.168.33.21"
+  end
+
+
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   config.vm.network :private_network, ip: "192.168.33.20"
@@ -74,9 +85,6 @@ Vagrant.configure("2") do |config|
   #   puppet.manifests_path = "manifests"
   #   puppet.manifest_file  = "init.pp"
   # end
-
-  config.vm.provision :shell, :path => "run.sh"
-
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
