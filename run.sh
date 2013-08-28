@@ -5,7 +5,8 @@
 # and place that file in this directory
 # 
 
-ansible_awx=${awx-setup-1.2.2}
+# if the version changes, update this
+ansible_awx="awx-setup-1.2.2"
 
 # install python stuff
 sudo yum -y install python26 python26-PyYAML python26-paramiko python26-jinja2
