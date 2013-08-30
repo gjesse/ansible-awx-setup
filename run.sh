@@ -8,11 +8,12 @@
 # if the version changes, update this
 ansible_awx="awx-setup-1.2.2"
 
-# install python stuff
-sudo yum -y install python26 python26-PyYAML python26-paramiko python26-jinja2
 
 # install epel
 sudo rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+
+# for some reason this is installing as disabled today - enable epel
+sudo sed  -i '0,/enabled=0/s/enabled=0/enabled=1/' /etc/yum.repos.d/epel.repo
 
 # install ansible
 sudo yum -y install ansible
