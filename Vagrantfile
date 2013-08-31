@@ -7,11 +7,11 @@ Vagrant.configure("2") do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "centos-6.4-x86_64"
+  #config.vm.box = "centos-6.4-x86_64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20130427.box"
+  #config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20130427.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -19,14 +19,30 @@ Vagrant.configure("2") do |config|
   # config.vm.network :forwarded_port, guest: 80, host: 8080
 
 
-  config.vm.define :awx do |awx|
-    awx.vm.network :private_network, ip: "192.168.33.20"
-    awx.vm.provision :shell, :path => "run.sh"
-  end
+  config.vm.box = "dummy"
+#  config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
 
-  config.vm.define :target do |target|
-    target.vm.network :private_network, ip: "192.168.33.21"
+  # ami-eb6b0182	
+  config.vm.provider :aws do |aws, override|
+    # awx.vm.network :private_network, ip: "192.168.33.20"
+    aws.keypair_name="aws-default-key"
+    aws.security_groups = "default"    
+    aws.ami = "ami-6b470b02"
+    aws.instance_type = "t1.micro"
+    override.ssh.username = "root"
+    override.ssh.private_key_path = "~/.ssh/aws-default-key"
+    aws.vm.provision :shell, :path => "run.sh"
   end
+  
+  
+  config.vm.define :awx do |awx| 
+    awx.vm.provision :shell, :path => "run.sh"      
+  end
+  
+
+  #config.vm.define :target do |target|
+  #  target.vm.network :private_network, ip: "192.168.33.21"
+  #end
 
 
   # Create a private network, which allows host-only access to the machine
